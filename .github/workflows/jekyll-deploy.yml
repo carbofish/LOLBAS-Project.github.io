@@ -34,10 +34,16 @@ jobs:
         with:
           source: ./
           destination: ./_site
+
+      - name: Copy files to temporary directory
+        run: cp -r ./_site ./temp_site
       
-      - name: Run replacement in Docker (as a fallback)
+      - name: Run replacement
         run: |
-          docker run --rm -v $(pwd):/app ubuntu:latest bash -c cd /app/_site && find . -type f -exec sed -i 's|/pages/carbofish/LOLBAS-Project.github.io||g' {} +
+          find ./temp_site -type f -exec sed -i 's|/pages/carbofish/LOLBAS-Project.github.io||g' {} +
           
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: builtFiles
+          path: |
+            ./temp_site
