@@ -28,10 +28,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
+      
+      - name: Replace text in built files
+        run: |
+          find ./_site -type f -exec sed -i 's|/pages/carbofish/LOLBAS-Project.github.io||g' {} +
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
