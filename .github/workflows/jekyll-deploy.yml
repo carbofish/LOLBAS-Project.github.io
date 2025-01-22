@@ -37,6 +37,7 @@ jobs:
       
       - name: Replace text in built files
         run: |
+          chmod -R u+w ./_site
           find ./_site -type f -exec sed -i 's|/pages/carbofish/LOLBAS-Project.github.io||g' {} +
           
       - name: Upload artifact
