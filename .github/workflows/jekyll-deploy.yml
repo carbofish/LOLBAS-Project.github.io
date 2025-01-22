@@ -34,13 +34,10 @@ jobs:
         with:
           source: ./
           destination: ./_site
-          
-      - name: Checkout
-        uses: actions/checkout@v4
       
-      - name: Replace text in built files
+      - name: Run replacement in Docker (as a fallback)
         run: |
-          find ./_site -type f -exec sed -i 's|/pages/carbofish/LOLBAS-Project.github.io||g' {} +
+          docker run --rm -v $(pwd):/app ubuntu:latest bash -c cd /app/_site && find . -type f -exec sed -i 's|/pages/carbofish/LOLBAS-Project.github.io||g' {} +
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
